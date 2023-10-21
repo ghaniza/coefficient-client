@@ -1,0 +1,17 @@
+.container {
+  position: relative;
+}
+
+.modal {
+  position: absolute;
+  top: -0.5rem;
+  left: 0;
+  right: 0;
+  transform: translateY(-100%);
+
+  background-color: #fff;
+
+  & > * {
+    margin-bottom: 0.5rem;
+  }
+}

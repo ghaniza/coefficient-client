@@ -1,0 +1,21 @@
+.container {
+  overflow: hidden;
+  position: relative;
+
+  & img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+}
+
+.online {
+  width: max(15%, 8px);
+  height: max(15%, 8px);
+  border-radius: 50%;
+  position: absolute;
+  background-color: #00c305;
+  z-index: 1;
+  border: 1px solid #fff;
+  transform: translate(-50%, -50%);
+}

@@ -1,0 +1,26 @@
+.splitter {
+  width: 100%;
+  position: relative;
+  text-align: center;
+  z-index: 1;
+  color: rgba(112, 124, 151, 0.7);
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+
+  & span {
+    padding: 0 0.5rem;
+    background-color: #fff;
+  }
+
+  &::before {
+    content: "";
+    height: 1px;
+    background-color: rgba(112, 124, 151, 0.15);
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    z-index: -1;
+  }
+}

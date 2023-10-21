@@ -1,0 +1,72 @@
+.content {
+  border-radius: 0rem 0.625rem 0.625rem 0.625rem;
+  background: linear-gradient(91deg, #60a9f6 0%, #2a8bf2 100%);
+  max-width: 60%;
+  width: fit-content;
+  position: relative;
+  color: #fff;
+  font-size: 10pt;
+  padding: 1rem;
+  margin-left: 3rem;
+  margin-bottom: 2rem;
+
+  & button {
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  & > small {
+    color: #707c97b2;
+    position: absolute;
+    bottom: -1rem;
+    right: 0;
+  }
+}
+
+.profilePicture {
+  position: absolute;
+  left: -3rem;
+  top: 0;
+  margin-bottom: 1rem;
+}
+
+.mine {
+  border-radius: 0.625rem 0 0.625rem 0.625rem;
+  background: #fff;
+  color: #707c97;
+  border: solid 1px rgba(112, 124, 151, 0.25);
+  margin-left: 0;
+  margin-right: 3rem;
+  align-self: flex-end;
+
+  .profilePicture {
+    left: unset;
+    right: -3rem;
+  }
+
+  & > small {
+    right: unset;
+    left: 0;
+  }
+
+  & button {
+    right: unset;
+    left: -2rem;
+  }
+}
+
+.withoutProfilePicture {
+  .profilePicture {
+    visibility: hidden;
+  }
+}
+
+.withoutTime {
+  margin-bottom: 0.625rem;
+
+  & > small {
+    visibility: hidden !important;
+  }
+}
