@@ -3,9 +3,11 @@ import RoundButton from "../round-button";
 import { MoreHorizontal } from "react-feather";
 import styles from "./balloon.module.scss";
 import ProfilePicture from "../profile-picture";
+import { MessageDTO } from "@/hooks/chat.hook";
+import {useTimeDifference} from "@/hooks/time.hook";
 
 type BalloonProps = {
-  message: any;
+  message: MessageDTO;
   mine?: boolean;
   withProfilePicture?: boolean;
   withTime?: boolean;
@@ -17,6 +19,8 @@ const Balloon: FC<BalloonProps> = ({
   withProfilePicture,
   withTime,
 }) => {
+    const timeDifference = useTimeDifference(message.timestamp);
+
   const classNames = useMemo<string>(() => {
     const classes = [styles.content];
 
@@ -31,15 +35,14 @@ const Balloon: FC<BalloonProps> = ({
     <div className={classNames}>
       <ProfilePicture
         className={styles.profilePicture}
-        email="jf.melo6@gmail.com"
+        email={message.from.email}
         size={1.85}
-        online
       />
       <p>{message.content}</p>
       <RoundButton color="none">
         <MoreHorizontal size={18} />
       </RoundButton>
-      <small>4 days ago</small>
+      <small>{timeDifference}</small>
     </div>
   );
 };

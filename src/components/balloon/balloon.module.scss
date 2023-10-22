@@ -1,5 +1,5 @@
 .content {
-  border-radius: 0rem 0.625rem 0.625rem 0.625rem;
+  border-radius: 0 0.625rem 0.625rem 0.625rem;
   background: linear-gradient(91deg, #60a9f6 0%, #2a8bf2 100%);
   max-width: 60%;
   width: fit-content;
@@ -21,6 +21,7 @@
     color: #707c97b2;
     position: absolute;
     bottom: -1rem;
+    white-space: nowrap;
     right: 0;
   }
 }
@@ -44,11 +45,6 @@
   .profilePicture {
     left: unset;
     right: -3rem;
-  }
-
-  & > small {
-    right: unset;
-    left: 0;
   }
 
   & button {

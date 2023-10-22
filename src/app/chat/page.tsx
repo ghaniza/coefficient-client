@@ -13,18 +13,32 @@ import {
   Smile,
   Video,
 } from "react-feather";
-import styles from "./chat.module.scss";
 import RoundButton from "@/components/round-button";
 import SearchBar from "@/components/search-bar";
-import Message from "@/components/message";
-import { useState } from "react";
-import Balloon from "@/components/balloon";
-import TimeSplitter from "@/components/time-splitter";
+import Chat from "@/components/message";
+import React, {useEffect, useRef, useState} from "react";
 import ProfilePicture from "@/components/profile-picture";
 import FloatingActionButton from "@/components/floating-action-button";
+import { useChat, useMessages} from "@/hooks/chat.hook";
+import Balloon from "@/components/balloon";
 
-export default function Chat() {
+import socketIo from "@/services/socket-io";
+import styles from "./chat.module.scss";
+import {useUser} from "@/hooks/user.hook";
+import {registerMessage} from "@/services/user";
+import {useTimeDifference} from "@/hooks/time.hook";
+
+export default function ChatPage() {
+  const chatMessages = useMessages('939ae835-a4f6-43b9-91a6-798d2565ffd2');
+  const user = useUser('7cd78353-1e70-4632-b2cc-9f644f25d4a6');
+  const chats = useChat();
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const chatDataRef = useRef<HTMLDivElement>(null);
+
   const [selected, setSelected] = useState("0");
+  const lastOnline = useTimeDifference(user.user?.lastOnline);
+
   const items = [
     {
       label: "Recent chats",
@@ -40,97 +54,55 @@ export default function Chat() {
     },
   ];
 
-  const messages = [
-    {
-      from: {
-        id: "0",
-        username: "Ghaniza",
-        lastOnline: new Date(Date.now() - 120000),
-      },
-      lastMessage: {
-        read: false,
-        content: "my messsage here",
-        timestamp: new Date(Date.now() - 120000),
-        files: [],
-      },
-      unreadMessageCount: 1,
-    },
-    {
-      from: {
-        id: "1",
-        username: "Ghaniza",
-        lastOnline: new Date(Date.now() - 120000),
-      },
-      lastMessage: {
-        read: false,
-        content:
-          "my messsage here gwgionbewin wef vwqwdq qwd qw d qwd qwdqwdqwdqwdqwdq d qw dwq dqwdqwd qw dqw dqw dqwdqwdqw dq wd qwd wq dwqdqwdqw d qwd qw dq wd qwdqw",
-        timestamp: new Date(Date.now() - 120000),
-        files: [],
-      },
-      unreadMessageCount: 0,
-    },
-    {
-      from: {
-        id: "2",
-        username: "Ghaniza",
-        lastOnline: new Date(Date.now() - 120000),
-      },
-      lastMessage: {
-        read: false,
-        content: "my messsage here",
-        timestamp: new Date(Date.now() - 120000),
-        files: [],
-      },
-      unreadMessageCount: 1,
-    },
-    {
-      from: {
-        id: "3",
-        username: "Ghaniza",
-        lastOnline: new Date(Date.now() - 120000),
-      },
-      lastMessage: {
-        read: false,
-        content: "my messsage here",
-        timestamp: new Date(Date.now() - 120000),
-        files: [],
-      },
-      unreadMessageCount: 1,
-    },
-    {
-      from: {
-        id: "4",
-        username: "Ghaniza",
-        lastOnline: new Date(Date.now() - 120000),
-      },
-      lastMessage: {
-        read: false,
-        content: "my messsage here",
-        timestamp: new Date(Date.now() - 120000),
-        files: [],
-      },
-      unreadMessageCount: 1,
-    },
-    {
-      from: {
-        id: "5",
-        username: "Ghaniza",
-        lastOnline: new Date(Date.now() - 120000),
-      },
-      lastMessage: {
-        read: false,
-        content: "my messsage here",
-        timestamp: new Date(Date.now() - 120000),
-        files: [],
-      },
-      unreadMessageCount: 18,
-    },
-  ];
+  const sendMessage = async () => {
+    const text= inputRef.current?.value;
+
+    if(!inputRef.current || !text) return;
+    await registerMessage('939ae835-a4f6-43b9-91a6-798d2565ffd2', user.user?.id, text);
+    inputRef.current.value = "";
+  }
+
+  const handleChatKeyDown = async (event: React.KeyboardEvent) => {
+    if(event.key !== 'Enter') return
+    await sendMessage();
+  }
+
+  const handleSubmitMessage = async () => {
+    await sendMessage();
+  }
 
   const handleSelectChat = (id: string) => {
     setSelected(id);
   };
+
+  const handleConnect = () => {
+    socketIo.emit('join-chat', { chatId: '939ae835-a4f6-43b9-91a6-798d2565ffd2' });
+  }
+
+  const handleMessage = async (message: any) => {
+    await chatMessages.revalidate();
+  }
+
+  useEffect(() => {
+    socketIo.on('connect', handleConnect);
+    socketIo.on('message', handleMessage);
+
+    socketIo.connect();
+
+    return () => {
+      socketIo.off('connect', handleConnect);
+      socketIo.off('message', handleMessage);
+    }
+  }, []);
+
+  useEffect(() => {
+    if(chatDataRef.current) {
+      chatDataRef.current.scrollTo({
+        top: chatDataRef.current.scrollHeight,
+        behavior: 'smooth'
+      })
+    }
+  }, [chatDataRef, chatMessages]);
 
   return (
     <div className={styles.content}>
@@ -152,11 +124,11 @@ export default function Chat() {
         </div>
         <SearchBar />
         <div className={styles.messageContainer}>
-          {messages.map((message) => (
-            <Message
-              key={message.from.id}
-              message={message}
-              selected={message.from.id === selected}
+          {chats.chats.map((chat) => (
+            <Chat
+              key={chat.lastMessage?.id}
+              chat={chat}
+              selected={chat.lastMessage?.fromId === selected}
               onSelect={handleSelectChat}
             />
           ))}
@@ -164,10 +136,10 @@ export default function Chat() {
       </section>
       <section className={styles.messenger}>
         <div className={styles.messengerHeader}>
-          <ProfilePicture size={2.75} online />
+          <ProfilePicture size={2.75} online email={user.user?.email} />
           <div className={styles.messengerUserInfo}>
-            <span>Ghanizadev</span>
-            <small>last online 5 hours ago</small>
+            <span>{user.user?.name}</span>
+            <small>last online {lastOnline}</small>
           </div>
           <div className={styles.messengerActions}>
             <RoundButton color="secondary">
@@ -178,38 +150,22 @@ export default function Chat() {
             </RoundButton>
           </div>
         </div>
-        <div className={styles.messengerData}>
-          <Balloon
-            mine={false}
-            message={messages[0].lastMessage}
-            withProfilePicture
-          />
-          <Balloon mine={false} message={messages[1].lastMessage} withTime />
-          <TimeSplitter time={new Date(Date.now() - 3_600_000)} />
-          <Balloon
-            mine={true}
-            message={messages[2].lastMessage}
-            withProfilePicture
-          />
-          <Balloon mine={true} message={messages[3].lastMessage} withTime />
-          <Balloon
-            mine={true}
-            message={messages[2].lastMessage}
-            withProfilePicture
-          />
-          <Balloon mine={true} message={messages[3].lastMessage} withTime />
-          <Balloon
-            mine={true}
-            message={messages[2].lastMessage}
-            withProfilePicture
-          />
-          <Balloon mine={true} message={messages[3].lastMessage} withTime />
-          <Balloon
-            mine={true}
-            message={messages[2].lastMessage}
-            withProfilePicture
-          />
-          <Balloon mine={true} message={messages[3].lastMessage} withTime />
+        <div className={styles.messengerData} ref={chatDataRef}>
+          {chatMessages.messages.map((message, index, array) => {
+            const withProfilePicture = index === 0 || message.from.id !== array[index - 1].from.id;
+            const withTime = index === array.length - 1 || message.from.id !== array[index + 1].from.id;
+            const mine = user.user?.id === message.from.id;
+
+            return (
+              <Balloon
+                key={message.id}
+                mine={mine}
+                message={message}
+                withProfilePicture={withProfilePicture}
+                withTime={withTime}
+              />
+            )
+          })}
         </div>
         <div className={styles.messengerInput}>
           <div className={styles.inputFieldWrapper}>
@@ -233,12 +189,16 @@ export default function Chat() {
                 },
               ]}
             />
-            <input placeholder="Type a message here" />
+            <input
+                ref={inputRef}
+                placeholder="Type a message here"
+                onKeyDown={handleChatKeyDown}
+            />
             <div>
               <RoundButton color="none">
                 <Smile size={18} />
               </RoundButton>
-              <RoundButton>
+              <RoundButton onClick={handleSubmitMessage}>
                 <Send size={18} />
               </RoundButton>
             </div>

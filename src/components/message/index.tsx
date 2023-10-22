@@ -1,47 +1,44 @@
 /* eslint-disable @next/next/no-img-element */
-import { FC } from "react";
+import {FC, useEffect, useMemo} from "react";
 import styles from "./message.module.scss";
 import ProfilePicture from "../profile-picture";
+import {UserDTO, useUser} from "@/hooks/user.hook";
+import {ChatDataDTO} from "@/hooks/chat.hook";
+import {useTimeDifference} from "@/hooks/time.hook";
 
-type UserDTO = {
-  id: string;
-  username: string;
-  lastOnline: Date;
-};
-
-type FileDTO = {
+export type FileDTO = {
   filename: string;
   mimetype: string;
   size: number;
 };
 
-type VoiceClipDTO = {
+export type VoiceClipDTO = {
   length: number;
   content: Buffer;
 };
 
-type MessageData = {
-  from: UserDTO;
-  lastMessage: {
-    read: boolean;
-    content: string;
-    timestamp: Date;
-    files: FileDTO[];
-    voiceClip?: VoiceClipDTO;
-  };
-  unreadMessageCount: number;
-};
-
 type MessageProps = {
-  message: MessageData;
+  chat: ChatDataDTO;
   selected?: boolean;
   onSelect?: (selected: string) => void;
 };
 
-const Message: FC<MessageProps> = ({ message, selected, onSelect }) => {
+const Chat: FC<MessageProps> = ({ chat, selected, onSelect }) => {
+  const user = useUser('7cd78353-1e70-4632-b2cc-9f644f25d4a6');
+  const lastOnline = useTimeDifference(user.user?.lastOnline);
+  const lastMessage = useTimeDifference(chat.lastMessage?.timestamp);
+
   const handleOnClick = () => {
-    onSelect && onSelect(message.from.id);
+    onSelect && onSelect(chat.participants[0].id);
   };
+
+  const sender = useMemo(() => {
+    return chat.participants.find(participant => participant.id === user.user?.id)
+  }, [chat, user]);
+
+  useEffect(() => {
+    console.log(user.user?.lastOnline)
+  }, [user]);
 
   return (
     <div
@@ -50,18 +47,18 @@ const Message: FC<MessageProps> = ({ message, selected, onSelect }) => {
       onClick={handleOnClick}
     >
       <div className={styles.header}>
-        <ProfilePicture email="" online />
+        <ProfilePicture email={sender?.email} online />
         <div className={styles.userInfo}>
-          <span>{message.from.username}</span>
-          <small>last online 5 hours ago</small>
+          <span>{sender?.name}</span>
+          <small>last online {lastOnline}</small>
         </div>
-        <small className={styles.lastOnline}>1 minute ago</small>
+        <small className={styles.lastOnline}>{lastMessage}</small>
       </div>
       <div className={styles.text}>
-        {message.lastMessage.content}
-        {message.unreadMessageCount ? (
+        {chat.lastMessage?.content}
+        {chat.unreadMessageCount ? (
           <span>
-            {message.unreadMessageCount > 9 ? "9+" : message.unreadMessageCount}
+            {chat.unreadMessageCount > 9 ? "9+" : chat.unreadMessageCount}
           </span>
         ) : (
           <></>
@@ -71,4 +68,4 @@ const Message: FC<MessageProps> = ({ message, selected, onSelect }) => {
   );
 };
 
-export default Message;
+export default Chat;

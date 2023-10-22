@@ -39,7 +39,7 @@ const ProfilePicture: FC<ProfilePictureProps> = ({
       )}
       <img
         alt="Profile picture"
-        src={`https://www.gravatar.com/avatar/${hash}?d=mp&s=${v * 16}`}
+        src={`https://www.gravatar.com/avatar/${hash}?d=mp&s=${Math.max(v * 16, 64)}`}
       />
     </div>
   );

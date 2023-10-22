@@ -18,3 +18,8 @@
 - Criar `branch` de trabalho baseado em `develop`
 - Testar as implementacoes
 - Criar `pull request` (PR) para `develop`
+
+# Referencias
+
+- [Design](https://www.figma.com/file/apuQkqKsLVpUzmfXJQ5NFM/Chat-Dashboard?type=design&node-id=0%3A1&mode=design&t=0qL8XCWQRg9GvfYL-1)
+- Design source: https://unblast.com/free-chat-dashboard-ui-template-fig/
