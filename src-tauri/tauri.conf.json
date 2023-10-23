@@ -7,7 +7,7 @@
     "distDir": "../out"
   },
   "package": {
-    "productName": "mercury-client",
+    "productName": "coefficient-client",
     "version": "0.1.0"
   },
   "tauri": {
@@ -29,7 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.ghanizadev.mercury",
+      "identifier": "com.ghanizadev.coefficient",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -58,7 +58,7 @@
         "fullscreen": false,
         "height": 800,
         "resizable": true,
-        "title": "Mercury",
+        "title": "CoEfficient",
         "width": 1200,
         "minHeight": 800,
         "minWidth": 1200

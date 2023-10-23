@@ -36,10 +36,6 @@ const Chat: FC<MessageProps> = ({ chat, selected, onSelect }) => {
     return chat.participants.find(participant => participant.id === user.user?.id)
   }, [chat, user]);
 
-  useEffect(() => {
-    console.log(user.user?.lastOnline)
-  }, [user]);
-
   return (
     <div
       className={styles.container}

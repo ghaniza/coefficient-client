@@ -21,7 +21,6 @@ const Sidebar: FC = () => {
 
   const handleOnClick = (page: string) => {
     return () => {
-      console.log(page);
       router.push("/" + page);
     };
   };
