@@ -1,4 +1,4 @@
-"use client"
+'use client';
 export default function Notifications() {
-  return <h2>Notifications</h2>;
+    return <h2>Notifications</h2>;
 }

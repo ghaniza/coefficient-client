@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  & span {
+    color: #0d1c2e;
+  }
+
+  & small {
+    color: #2a8bf2;
+    font-size: 0.725rem;
+  }
+}

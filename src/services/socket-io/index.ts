@@ -1,11 +1,22 @@
-import { io } from "socket.io-client";
+import { io } from 'socket.io-client';
 
-let socketIo = io(process.env.NEXT_PUBLIC_WS_BASE_URL ?? "", {
-    autoConnect: false,
-    reconnection: true,
-    reconnectionDelay: 500,
-    reconnectionAttempts: 10,
-    secure: false,
-})
+export const makeIO = () => {
+    const url = localStorage.getItem('service-url') ?? '';
 
-export default socketIo;
+    (window as any).socketIo = io(url, {
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionAttempts: 30,
+        secure: false,
+        extraHeaders: {
+            authorization: 'Bearer ' + localStorage.getItem('access'),
+        },
+    });
+
+    return (window as any).socketIo;
+};
+
+export const getIO = () => {
+    if (!(window as any).socketIo) return makeIO();
+    return (window as any).socketIo;
+};

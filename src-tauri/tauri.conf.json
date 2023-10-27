@@ -4,7 +4,8 @@
     "beforeBuildCommand": "npm run build",
     "beforeDevCommand": "npm run dev",
     "devPath": "http://localhost:5001",
-    "distDir": "../out"
+    "distDir": "../out",
+    "withGlobalTauri": true
   },
   "package": {
     "productName": "coefficient-client",
@@ -12,7 +13,13 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "all": false,
+      "notification": {
+        "all": true
+      },
+      "window": {
+        "requestUserAttention": true
+      }
     },
     "bundle": {
       "active": true,

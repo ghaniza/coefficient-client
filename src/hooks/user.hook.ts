@@ -1,5 +1,5 @@
-import useSWR from "swr";
-import fetcher from "@/services/fetcher";
+import useSWR from 'swr';
+import fetcher from '@/services/fetcher';
 
 export type UserDTO = {
     id: string;
@@ -7,15 +7,18 @@ export type UserDTO = {
     email: string;
     online: boolean;
     lastOnline: Date;
-}
+};
 
-export const useUser = (userId: string) => {
-    const {data, mutate, isLoading, error} = useSWR<UserDTO>(`/v1/user/${userId}`, fetcher);
+export const useUser = () => {
+    const { data, mutate, isLoading, error } = useSWR<UserDTO>(
+        '/v1/user',
+        fetcher({ withAuthorization: true })
+    );
 
     return {
         user: data,
         revalidate: mutate,
         isLoading,
         error,
-    }
-}
+    };
+};

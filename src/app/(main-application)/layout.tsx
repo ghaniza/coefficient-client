@@ -1,25 +1,25 @@
-import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
-import Sidebar from "@/components/sidebar";
+import type { Metadata } from 'next';
+import { Roboto } from 'next/font/google';
+import Sidebar from '@/components/sidebar';
 
-import "../globals.scss";
+import '../globals.scss';
 
-const inter = Roboto({ weight: ["100", "400", "700"], subsets: ["latin"] });
+const inter = Roboto({ weight: ['100', '400', '700'], subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "CoEfficient",
-  description: "Collaboration tool",
+    title: 'CoEfficient',
+    description: 'Collaboration tool',
 };
 
 const RootLayout: WithChildren = ({ children }) => {
-  return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Sidebar />
-        <main>{children}</main>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <body className={inter.className}>
+                <Sidebar />
+                <main>{children}</main>
+            </body>
+        </html>
+    );
 };
 
 export default RootLayout;
