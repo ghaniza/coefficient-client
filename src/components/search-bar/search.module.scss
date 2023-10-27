@@ -1,19 +1,19 @@
 .container {
-  border-radius: 0.375rem;
-  background-color: #fff;
-  display: grid;
-  grid-template-columns: min-content 1fr 8rem;
-  grid-template-rows: 1fr;
-  gap: 0.5rem;
-  padding: 1rem;
+    border-radius: 0.375rem;
+    background-color: #fff;
+    display: grid;
+    grid-template-columns: min-content 1fr 8rem;
+    grid-template-rows: 1fr;
+    gap: 0.5rem;
+    padding: 1rem;
 
-  & > svg {
-    margin: auto;
-  }
+    & > svg {
+        margin: auto;
+    }
 
-  & input {
-    border: none;
-    padding: 0 0.25rem;
-    font-size: 12pt;
-  }
+    & input {
+        border: none;
+        padding: 0 0.25rem;
+        font-size: 12pt;
+    }
 }

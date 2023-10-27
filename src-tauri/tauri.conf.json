@@ -4,15 +4,22 @@
     "beforeBuildCommand": "npm run build",
     "beforeDevCommand": "npm run dev",
     "devPath": "http://localhost:5001",
-    "distDir": "../out"
+    "distDir": "../out",
+    "withGlobalTauri": true
   },
   "package": {
-    "productName": "mercury-client",
+    "productName": "coefficient-client",
     "version": "0.1.0"
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "all": false,
+      "notification": {
+        "all": true
+      },
+      "window": {
+        "requestUserAttention": true
+      }
     },
     "bundle": {
       "active": true,
@@ -29,7 +36,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.ghanizadev.mercury",
+      "identifier": "com.ghanizadev.coefficient",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -58,7 +65,7 @@
         "fullscreen": false,
         "height": 800,
         "resizable": true,
-        "title": "Mercury",
+        "title": "CoEfficient",
         "width": 1200,
         "minHeight": 800,
         "minWidth": 1200

@@ -1,74 +1,76 @@
 /* eslint-disable @next/next/no-img-element */
-import { FC } from "react";
-import styles from "./message.module.scss";
-import ProfilePicture from "../profile-picture";
+import { FC, useEffect, useMemo } from 'react';
+import styles from './message.module.scss';
+import ProfilePicture from '../profile-picture';
+import { UserDTO, useUser } from '@/hooks/user.hook';
+import { ChatDataDTO } from '@/hooks/chat.hook';
+import { useTimeDifference } from '@/hooks/time.hook';
 
-type UserDTO = {
-  id: string;
-  username: string;
-  lastOnline: Date;
+export type FileDTO = {
+    filename: string;
+    mimetype: string;
+    size: number;
 };
 
-type FileDTO = {
-  filename: string;
-  mimetype: string;
-  size: number;
-};
-
-type VoiceClipDTO = {
-  length: number;
-  content: Buffer;
-};
-
-type MessageData = {
-  from: UserDTO;
-  lastMessage: {
-    read: boolean;
-    content: string;
-    timestamp: Date;
-    files: FileDTO[];
-    voiceClip?: VoiceClipDTO;
-  };
-  unreadMessageCount: number;
+export type VoiceClipDTO = {
+    length: number;
+    content: Buffer;
 };
 
 type MessageProps = {
-  message: MessageData;
-  selected?: boolean;
-  onSelect?: (selected: string) => void;
+    chat: ChatDataDTO;
+    selected?: boolean;
+    onSelect?: (selected: string) => void;
 };
 
-const Message: FC<MessageProps> = ({ message, selected, onSelect }) => {
-  const handleOnClick = () => {
-    onSelect && onSelect(message.from.id);
-  };
+const Chat: FC<MessageProps> = ({ chat, selected, onSelect }) => {
+    const user = useUser();
+    const lastMessage = useTimeDifference(chat.lastMessage?.timestamp);
 
-  return (
-    <div
-      className={styles.container}
-      data-selected-message={selected}
-      onClick={handleOnClick}
-    >
-      <div className={styles.header}>
-        <ProfilePicture email="" online />
-        <div className={styles.userInfo}>
-          <span>{message.from.username}</span>
-          <small>last online 5 hours ago</small>
+    const handleOnClick = () => {
+        onSelect && onSelect(chat.id);
+    };
+
+    const sender = useMemo(() => {
+        return chat.participants.find(
+            (participant) => participant.id !== user.user?.id
+        );
+    }, [chat, user]);
+    const lastOnline = useTimeDifference(sender?.lastOnline);
+
+    return (
+        <div
+            className={styles.container}
+            data-selected-message={selected}
+            onClick={handleOnClick}
+        >
+            <div className={styles.header}>
+                <ProfilePicture email={sender?.email} online />
+                <div className={styles.userInfo}>
+                    <span>{sender?.name}</span>
+                    <small>
+                        {sender?.online
+                            ? 'online'
+                            : `last online ${lastOnline}`}
+                    </small>
+                </div>
+                <small className={styles.lastOnline}>{lastMessage}</small>
+            </div>
+            <div className={styles.text}>
+                {chat.lastMessage?.fromId === user?.user?.id ? 'You: ' : ''}
+                {chat.lastMessage?.content}
+                {chat.unreadMessageCount ? (
+                    <span>
+                        {chat.unreadMessageCount > 9
+                            ? '9+'
+                            : chat.unreadMessageCount}
+                    </span>
+                ) : (
+                    <></>
+                )}
+            </div>
         </div>
-        <small className={styles.lastOnline}>1 minute ago</small>
-      </div>
-      <div className={styles.text}>
-        {message.lastMessage.content}
-        {message.unreadMessageCount ? (
-          <span>
-            {message.unreadMessageCount > 9 ? "9+" : message.unreadMessageCount}
-          </span>
-        ) : (
-          <></>
-        )}
-      </div>
-    </div>
-  );
+    );
 };
 
-export default Message;
+export default Chat;
