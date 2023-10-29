@@ -1,23 +1,27 @@
 import styles from './round-button.module.scss';
+import { ButtonHTMLAttributes, DetailedHTMLProps, HTMLProps } from 'react';
 
 type RoundButtonProps = {
-    color?: 'primary' | 'secondary' | 'tertiary' | 'none';
-    onClick?: () => void;
+    color?: 'primary' | 'secondary' | 'tertiary' | 'success' | 'error' | 'none';
+    size?: number;
 };
 
-const RoundButton: WithChildren<RoundButtonProps> = ({
-    children,
-    color,
-    onClick,
-}) => {
-    const handleOnClick = () => {
-        onClick && onClick();
-    };
+const RoundButton: FCC<
+    DetailedHTMLProps<
+        ButtonHTMLAttributes<HTMLButtonElement>,
+        HTMLButtonElement
+    > &
+        RoundButtonProps
+> = ({ children, color, size, className, ...props }) => {
+    const classNames = [styles.roundButton, styles[color ?? 'primary']];
+
+    if (className) classNames.push(className);
 
     return (
         <button
-            className={`${styles.roundButton} ${styles[color ?? 'primary']}`}
-            onClick={handleOnClick}
+            className={classNames.join(' ')}
+            style={{ width: (size ?? 34) + 'px', height: (size ?? 34) + 'px' }}
+            {...props}
         >
             {children}
         </button>

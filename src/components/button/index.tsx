@@ -7,7 +7,7 @@ type ButtonProps = {
     color?: 'primary' | 'secondary' | 'tertiary' | 'none';
 };
 
-const Button: WithChildren<
+const Button: FCC<
     ButtonProps &
         DetailedHTMLProps<
             ButtonHTMLAttributes<HTMLButtonElement>,

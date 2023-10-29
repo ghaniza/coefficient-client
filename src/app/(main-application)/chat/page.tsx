@@ -12,14 +12,37 @@ import { getIO } from '@/services/socket-io';
 import styles from './chat.module.scss';
 import { useMessages } from '@/hooks/message.hook';
 import ChatView from '@/app/(main-application)/chat/chat-view';
-import { useUser } from '@/hooks/user.hook';
+import CreateChat from '@/components/create-chat';
+
+const SEARCH_BAR_ITEMS = [
+    {
+        id: '0',
+        label: 'All',
+        value: 'all',
+    },
+    {
+        id: '1',
+        label: 'Messages',
+        value: 'messages',
+    },
+    {
+        id: '2',
+        label: 'People',
+        value: 'people',
+    },
+    {
+        id: '3',
+        label: 'Files',
+        value: 'files',
+    },
+];
 
 export default function ChatPage() {
     const [selected, setSelected] = useState('');
     const [connected, setConnected] = useState(false);
     const [unreadChatOnly, setUnreadChatOnly] = useState(false);
+    const [createChatOpen, setCreateChatOpen] = useState(false);
 
-    const { user } = useUser();
     const chats = useChat(unreadChatOnly);
     const chatMessages = useMessages(selected ?? '');
 
@@ -27,6 +50,10 @@ export default function ChatPage() {
         {
             label: 'Recent chats',
             value: 'recent',
+        },
+        {
+            label: 'Archived',
+            value: 'archived',
         },
         {
             label: 'Unread chats',
@@ -57,7 +84,7 @@ export default function ChatPage() {
         setSelected('');
     };
 
-    const handleChatAck = async ({ chatId, fromId }: any) => {
+    const handleChatAck = async () => {
         await chats.revalidate();
     };
 
@@ -67,6 +94,17 @@ export default function ChatPage() {
         );
         await appWindow.requestUserAttention(UserAttentionType.Informational);
         await chats.revalidate();
+    };
+
+    const handleCreateChatClose = async (chatId?: string) => {
+        setCreateChatOpen(false);
+        await chats.revalidate();
+
+        if (chatId) setSelected(chatId);
+    };
+
+    const handleCreateChatOpen = () => {
+        setCreateChatOpen(true);
     };
 
     useEffect(() => {
@@ -88,58 +126,66 @@ export default function ChatPage() {
     }, []);
 
     useEffect(() => {
-        if (connected && selected)
+        if (selected)
             getIO().emit('join-chat', {
                 chatId: selected,
             });
-    }, [connected, selected]);
+    }, [selected, connected]);
 
     return (
-        <div className={styles.content}>
-            <section className={styles.previousChats}>
-                <div className={styles.header}>
-                    <div className={styles.title}>
-                        <h2>Chats</h2>
-                        <Dropdown
-                            style={{
-                                width: '8rem',
-                                fontSize: '0.8rem',
-                                paddingLeft: 0,
-                            }}
-                            items={items}
-                            onChange={handleChatFilter}
-                        />
+        <>
+            <div className={styles.content}>
+                <section className={styles.previousChats}>
+                    <div className={styles.header}>
+                        <div className={styles.title}>
+                            <h2>Chats</h2>
+                            <Dropdown
+                                style={{
+                                    width: '8rem',
+                                    fontSize: '0.8rem',
+                                    paddingLeft: 0,
+                                }}
+                                items={items}
+                                onChange={handleChatFilter}
+                            />
+                        </div>
+                        <div>
+                            <Button onClick={handleCreateChatOpen}>
+                                <Plus />
+                                <span style={{ marginLeft: '0.375rem' }}>
+                                    Create new chat
+                                </span>
+                            </Button>
+                        </div>
                     </div>
-                    <div>
-                        <Button>
-                            <Plus />
-                            <span style={{ marginLeft: '0.375rem' }}>
-                                Create new chat
-                            </span>
-                        </Button>
+                    <SearchBar items={SEARCH_BAR_ITEMS} />
+                    <div className={styles.messageContainer}>
+                        {chats.chats.map((chat) => (
+                            <Chat
+                                key={chat.id}
+                                chat={chat}
+                                selected={chat.id === selected}
+                                onSelect={handleSelectChat}
+                            />
+                        ))}
                     </div>
-                </div>
-                <SearchBar />
-                <div className={styles.messageContainer}>
-                    {chats.chats.map((chat) => (
-                        <Chat
-                            key={chat.id}
-                            chat={chat}
-                            selected={chat.id === selected}
-                            onSelect={handleSelectChat}
+                </section>
+                <section className={styles.messenger}>
+                    {selected ? (
+                        <ChatView
+                            currentChat={chats.chats.find(
+                                (c) => (c.id = selected)
+                            )}
                         />
-                    ))}
-                </div>
-            </section>
-            <section className={styles.messenger}>
-                {selected ? (
-                    <ChatView
-                        currentChat={chats.chats.find((c) => (c.id = selected))}
-                    />
-                ) : (
-                    <></>
-                )}
-            </section>
-        </div>
+                    ) : (
+                        <></>
+                    )}
+                </section>
+            </div>
+            <CreateChat
+                modalOpen={createChatOpen}
+                onModalClose={handleCreateChatClose}
+            />
+        </>
     );
 }

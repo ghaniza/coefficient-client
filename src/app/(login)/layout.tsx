@@ -1,5 +1,6 @@
 import React from 'react';
 import { Roboto } from 'next/font/google';
+import styles from './login.module.scss';
 
 const inter = Roboto({ weight: ['100', '400', '700'], subsets: ['latin'] });
 
@@ -15,7 +16,12 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-            <body className={inter.className}>{children}</body>
+            <body className={inter.className}>
+                <div className={styles.container}>
+                    <div className={styles.form}>{children}</div>
+                    <div className={styles.image}></div>
+                </div>
+            </body>
         </html>
     );
 }

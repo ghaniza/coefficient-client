@@ -3,7 +3,7 @@ import React, { CSSProperties, FC, useMemo, useRef, useState } from 'react';
 import styles from './dropdown.module.scss';
 import { ChevronDown } from 'react-feather';
 
-type DropdownOption = {
+export type DropdownOption = {
     label: string;
     value: string | number | Date | boolean;
     invisible?: boolean;

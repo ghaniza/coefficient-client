@@ -19,6 +19,9 @@
       },
       "window": {
         "requestUserAttention": true
+      },
+      "dialog": {
+        "all": true
       }
     },
     "bundle": {

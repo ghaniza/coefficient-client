@@ -45,7 +45,7 @@ const Chat: FC<MessageProps> = ({ chat, selected, onSelect }) => {
             onClick={handleOnClick}
         >
             <div className={styles.header}>
-                <ProfilePicture email={sender?.email} online />
+                <ProfilePicture email={sender?.email} online={sender?.online} />
                 <div className={styles.userInfo}>
                     <span>{sender?.name}</span>
                     <small>

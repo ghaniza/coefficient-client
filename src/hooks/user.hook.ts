@@ -22,3 +22,17 @@ export const useUser = () => {
         error,
     };
 };
+
+export const useUserSearch = (query?: string) => {
+    const { data, mutate, isLoading, error } = useSWR<UserDTO[]>(
+        `/v1/user/find?q=${query}`,
+        fetcher({ withAuthorization: true })
+    );
+
+    return {
+        users: data,
+        revalidate: mutate,
+        isLoading,
+        error,
+    };
+};

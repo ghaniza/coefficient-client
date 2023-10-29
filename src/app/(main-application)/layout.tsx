@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     description: 'Collaboration tool',
 };
 
-const RootLayout: WithChildren = ({ children }) => {
+const RootLayout: FCC = ({ children }) => {
     return (
         <html lang="en">
             <body className={inter.className}>

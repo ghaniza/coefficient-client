@@ -35,6 +35,24 @@
     }
 }
 
+.success {
+    background-color: #00C305;
+    color: #fff;
+
+    & svg {
+        stroke: #fff;
+    }
+}
+
+.error {
+    background-color: #FF3366;
+    color: #fff;
+
+    & svg {
+        stroke: #fff;
+    }
+}
+
 .none {
     background-color: transparent;
     color: #707c9785;
