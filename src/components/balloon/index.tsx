@@ -38,7 +38,7 @@ const Balloon: FC<BalloonProps> = ({
                 email={message.from.email}
                 size={1.85}
             />
-            <p>{message.content}</p>
+            <p data-emoji={true}>{message.content}</p>
             <RoundButton color="none">
                 <MoreHorizontal size={18} />
             </RoundButton>

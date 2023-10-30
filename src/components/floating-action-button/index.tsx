@@ -1,6 +1,6 @@
 import { FC, ReactNode, useRef, useState } from 'react';
 import RoundButton from '../round-button';
-import styles from './floation-action-button.module.scss';
+import styles from './floating-action-button.module.scss';
 
 type FloatingActionButtonProps = {
     icon: () => ReactNode;

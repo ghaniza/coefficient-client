@@ -1,6 +1,7 @@
 import React from 'react';
 import { Roboto } from 'next/font/google';
 import styles from './login.module.scss';
+import '@/app/(login)/login-layout.scss';
 
 const inter = Roboto({ weight: ['100', '400', '700'], subsets: ['latin'] });
 

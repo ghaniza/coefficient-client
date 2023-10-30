@@ -15,7 +15,7 @@ export type MessageDTO = {
 
 export const useMessages = (chatId?: string) => {
     const { data, isLoading, mutate, error } = useSWR<MessageDTO[]>(
-        `/v1/message/${chatId}`,
+        `/v1/message/by-chat/${chatId}`,
         fetcher({ withAuthorization: true })
     );
 

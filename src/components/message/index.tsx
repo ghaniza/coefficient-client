@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
-import { FC, useEffect, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import styles from './message.module.scss';
 import ProfilePicture from '../profile-picture';
-import { UserDTO, useUser } from '@/hooks/user.hook';
+import { useUser } from '@/hooks/user.hook';
 import { ChatDataDTO } from '@/hooks/chat.hook';
 import { useTimeDifference } from '@/hooks/time.hook';
 
@@ -57,8 +57,10 @@ const Chat: FC<MessageProps> = ({ chat, selected, onSelect }) => {
                 <small className={styles.lastOnline}>{lastMessage}</small>
             </div>
             <div className={styles.text}>
-                {chat.lastMessage?.fromId === user?.user?.id ? 'You: ' : ''}
-                {chat.lastMessage?.content}
+                <p data-emoji={true}>
+                    {chat.lastMessage?.fromId === user?.user?.id ? 'You: ' : ''}
+                    {chat.lastMessage?.content}
+                </p>
                 {chat.unreadMessageCount ? (
                     <span>
                         {chat.unreadMessageCount > 9

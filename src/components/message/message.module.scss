@@ -4,6 +4,8 @@
     border-radius: 0.375rem;
     min-height: 0;
     min-width: 0;
+    cursor: pointer;
+    overflow-wrap: break-word;
 
     &[data-selected-message='true'] {
         background: linear-gradient(97deg, #7cb8f7 0%, #2a8bf2 100%);
@@ -26,7 +28,7 @@
     font-weight: 400;
     position: relative;
 
-    & span {
+    & > span {
         position: absolute;
         top: 50%;
         right: 0;

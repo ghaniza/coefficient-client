@@ -55,8 +55,12 @@ const SignInPage = () => {
         )
             return;
 
-        const service = serviceUrlRef.current.value;
-        if (!service) return;
+        const serviceUrl = serviceUrlRef.current.value;
+        if (!serviceUrl) return;
+
+        const url = new URL(serviceUrl);
+
+        const service = url.origin;
 
         const username = usernameRef.current.value;
         const password = passwordRef.current.value;
@@ -73,6 +77,8 @@ const SignInPage = () => {
 
             router.push('/home');
         } else {
+            alert('Invalid credentials');
+
             localStorage.removeItem('service-url');
             localStorage.removeItem('username');
         }
@@ -92,21 +98,25 @@ const SignInPage = () => {
                     ref={serviceUrlRef}
                     placeholder={'Service URL'}
                     type={'url'}
+                    required={true}
                 />
                 <input
                     ref={usernameRef}
                     placeholder={'Username'}
                     type={'email'}
+                    required={true}
                 />
                 <input
                     ref={passwordRef}
                     placeholder={'Password'}
                     type={'password'}
+                    required={true}
                 />
-                <Button color={'secondary'} type={'submit'}>
+                <Button color={'primary'} type={'submit'}>
                     Enter
                 </Button>
             </form>
+            <br />
             <small>
                 <Link href={'reset-password'}>Forgot my password</Link>
             </small>

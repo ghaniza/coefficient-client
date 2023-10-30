@@ -4,6 +4,7 @@ import React, { FormEvent, useRef } from 'react';
 import Link from 'next/link';
 import Button from '@/components/button';
 import { resetPasswordRequest } from '@/services/user/user.api';
+import { redirect } from 'next/navigation';
 
 const ResetPasswordPage = () => {
     const emailInputRef = useRef<HTMLInputElement>(null);
@@ -16,10 +17,20 @@ const ResetPasswordPage = () => {
 
         const url = serviceUrlRef.current.value;
         const email = emailInputRef.current.value;
-        if (!url || !email) throw new Error('failed');
+        if (!url || !email)
+            return alert(
+                'Service URL or email were not provided, please fix the error and try again'
+            );
 
         const response = await resetPasswordRequest(url, email);
-        if (!response) throw new Error('failed');
+        if (!response)
+            return alert('The request failed, please try again later');
+
+        alert(
+            'If everything is correct, you will receive an email with the next steps to reset your password. Make sure to check your spam fold too.'
+        );
+
+        redirect('sign-in');
     };
 
     return (
@@ -37,10 +48,11 @@ const ResetPasswordPage = () => {
                     type={'email'}
                     placeholder={'email@domain.com'}
                 />
-                <Button type={'submit'} color={'secondary'}>
+                <Button type={'submit'} color={'primary'}>
                     Send
                 </Button>
             </form>
+            <br />
             <small>
                 Already have an account? <Link href={'sign-in'}>Sign In</Link>
             </small>

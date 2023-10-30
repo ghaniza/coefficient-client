@@ -5,10 +5,11 @@
     width: fit-content;
     position: relative;
     color: #fff;
-    font-size: 10pt;
+    font-size: 11pt;
     padding: 1rem;
     margin-left: 3rem;
     margin-bottom: 2rem;
+    overflow-wrap: break-word;
 
     & button {
         opacity: 0;

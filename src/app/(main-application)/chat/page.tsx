@@ -6,7 +6,7 @@ import Dropdown from '@/components/dropdown';
 import { Plus } from 'react-feather';
 import SearchBar from '@/components/search-bar';
 import Chat from '@/components/message';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useChat } from '@/hooks/chat.hook';
 import { getIO } from '@/services/socket-io';
 import styles from './chat.module.scss';
@@ -44,7 +44,11 @@ export default function ChatPage() {
     const [createChatOpen, setCreateChatOpen] = useState(false);
 
     const chats = useChat(unreadChatOnly);
-    const chatMessages = useMessages(selected ?? '');
+
+    const currentChat = useMemo(
+        () => chats.chats.find((c) => c.id === selected),
+        [selected, chats]
+    );
 
     const items = [
         {
@@ -62,6 +66,7 @@ export default function ChatPage() {
     ];
 
     const handleSelectChat = (id: string) => {
+        console.log(id);
         setSelected(id);
     };
 
@@ -73,10 +78,6 @@ export default function ChatPage() {
     const handleDisconnect = () => {
         console.log('Disconnect');
         setConnected(false);
-    };
-
-    const handleMessage = async () => {
-        await chatMessages.revalidate();
     };
 
     const handleChatFilter = (item: any) => {
@@ -112,14 +113,12 @@ export default function ChatPage() {
 
         socketIo.on('connect', handleConnect);
         socketIo.on('disconnect', handleDisconnect);
-        socketIo.on('message', handleMessage);
         socketIo.on('chat-update', handleChatUpdate);
         socketIo.on('chat-ack', handleChatAck);
 
         return () => {
             socketIo.off('connect', handleConnect);
             socketIo.off('disconnect', handleDisconnect);
-            socketIo.off('message', handleMessage);
             socketIo.off('chat-update', handleChatUpdate);
             socketIo.off('chat-ack', handleChatAck);
         };
@@ -171,12 +170,8 @@ export default function ChatPage() {
                     </div>
                 </section>
                 <section className={styles.messenger}>
-                    {selected ? (
-                        <ChatView
-                            currentChat={chats.chats.find(
-                                (c) => (c.id = selected)
-                            )}
-                        />
+                    {currentChat ? (
+                        <ChatView currentChat={currentChat} />
                     ) : (
                         <></>
                     )}
