@@ -8,7 +8,7 @@
     "withGlobalTauri": true
   },
   "package": {
-    "productName": "coefficient-client",
+    "productName": "CoEfficient",
     "version": "0.1.0"
   },
   "tauri": {
@@ -26,7 +26,7 @@
     },
     "bundle": {
       "active": true,
-      "category": "DeveloperTool",
+      "category": "Productivity",
       "copyright": "",
       "deb": {
         "depends": []
@@ -61,7 +61,14 @@
       "csp": null
     },
     "updater": {
-      "active": false
+      "active": true,
+      "endpoints": [
+        "http://localhost:5100/v1/binaries/{{target}}/{{arch}}/{{current_version}}"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IENGMEI2MjIwQ0VFQ0E2M0UKUldRK3B1ek9JR0lMejA4VEtzSkNjRlg2MU4yM1dJT3VuRG9za0dLSitKcElEdnRuSmRScWg1cVMK",
+      "windows": {
+        "installMode": "passive"
+      }
     },
     "windows": [
       {
