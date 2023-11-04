@@ -1,8 +1,11 @@
+@use "sass:color";
+@import "../../styles/colors";
+
 .button {
     box-shadow:
-        10px 6px 25px 0px rgba(42, 139, 242, 0.15),
-        4px 4px 25px 0px rgba(42, 139, 242, 0.05),
-        6px 6px 25px 0px rgba(42, 139, 242, 0.15);
+        10px 6px 25px 0 rgba(42, 139, 242, 0.15),
+        4px 4px 25px 0 rgba(42, 139, 242, 0.05),
+        6px 6px 25px 0 rgba(42, 139, 242, 0.15);
     border: none;
     border-radius: 0.375rem;
     width: 12rem;
@@ -16,37 +19,37 @@
 }
 
 .primary {
-    background: linear-gradient(93deg, #7cb8f7 0%, #2a8bf2 100%);
-    color: #fff;
+    background: $gradient;
+    color: $white;
 
     & svg {
-        stroke: #fff;
+        stroke: $white;
     }
 }
 
 .secondary {
-    background: #fff;
-    color: #707c97;
+    background:$white;
+    color: $text;
 
     & svg {
-        stroke: #707c97;
+        stroke: $text;
     }
 }
 
 .tertiary {
-    background: #2a8bf2;
-    color: #fff;
+    background: $primary;
+    color: $white;
 
     & svg {
-        stroke: #fff;
+        stroke: $white;
     }
 }
 
 .none {
     background: transparent;
-    color: #707c9785;
+    color: color.adjust($text, $alpha: -0.5);
 
     & svg {
-        stroke: #707c9785;
+        stroke: color.adjust($text, $alpha: -0.5);
     }
 }

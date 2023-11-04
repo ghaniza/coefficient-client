@@ -1,6 +1,8 @@
+@import "../../../styles/colors";
+
 .content {
     display: grid;
-    grid-template-columns: 2fr 3fr;
+    grid-template-columns: 1fr;
     grid-template-rows: minmax(0, 1fr);
     gap: 1rem;
     min-height: 100%;
@@ -8,6 +10,10 @@
 
     & * {
         user-select: none;
+    }
+
+    &[data-content="true"] {
+        grid-template-columns: 2fr 3fr;
     }
 }
 
@@ -24,21 +30,22 @@
 }
 
 .messenger {
+    grid-column: 2/5;
     display: grid;
     grid-template-rows: min-content 1fr min-content;
     border-radius: 0.375rem;
     overflow: hidden;
-    background-color: #ffff;
-    box-shadow: 0 10px 25px 0 rgba(0, 0, 0, 0.05);
+    background-color: $white;
+    box-shadow: 0 10px 25px 0 $backdrop;
     position: relative;
 }
 
 .messengerHeader {
-    background: #fafbff;
+    background: $white;
     display: grid;
     grid-template-columns: 4rem 1fr min-content;
     padding: 1rem 2rem;
-    border-bottom: 1px solid rgba(112, 124, 151, 0.1);
+    border-bottom: 1px solid rgba(112, 124, 151, 0.1); //TODO
 }
 
 .messengerActions {
@@ -57,7 +64,7 @@
 }
 
 .inputFieldWrapper {
-    border-top: 1px solid rgba(112, 124, 151, 0.1);
+    border-top: 1px solid rgba(112, 124, 151, 0.1); //TODO
     padding: 1rem 0;
     display: grid;
     grid-template-columns: min-content 1fr min-content;
@@ -124,11 +131,7 @@
     justify-content: center;
     align-items: center;
     opacity: 1;
-    transition: opacity 300ms ease-out;
+    transition: opacity 50ms ease-out;
     user-select: none;
     pointer-events: none;
-}
-
-.loadingHidden {
-    opacity: 0;
 }

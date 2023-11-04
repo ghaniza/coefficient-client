@@ -14,7 +14,7 @@ const fetcher = (options?: FetcherOptions) => {
         }
 
         const response = await fetch(
-            `${localStorage.getItem('service-url')}${path}`,
+            `${process.env.NEXT_PUBLIC_BASE_URL}${path}`,
             init
         );
         if (!response.ok) throw new Error('Failed to fetch');

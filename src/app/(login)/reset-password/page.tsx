@@ -8,21 +8,17 @@ import { redirect } from 'next/navigation';
 
 const ResetPasswordPage = () => {
     const emailInputRef = useRef<HTMLInputElement>(null);
-    const serviceUrlRef = useRef<HTMLInputElement>(null);
 
     const handleSendResetEmail = async (event: FormEvent) => {
         event.preventDefault();
 
-        if (!emailInputRef.current || !serviceUrlRef.current) return;
+        if (!emailInputRef.current) return;
 
-        const url = serviceUrlRef.current.value;
         const email = emailInputRef.current.value;
-        if (!url || !email)
-            return alert(
-                'Service URL or email were not provided, please fix the error and try again'
-            );
 
-        const response = await resetPasswordRequest(url, email);
+        if (!email) return alert('Please enter a valid email and try again');
+
+        const response = await resetPasswordRequest(email);
         if (!response)
             return alert('The request failed, please try again later');
 
@@ -38,11 +34,6 @@ const ResetPasswordPage = () => {
             <h1>Forgot my password</h1>
             <span>Enter your email</span>
             <form onSubmit={handleSendResetEmail}>
-                <input
-                    ref={serviceUrlRef}
-                    type={'url'}
-                    placeholder={'https://service.url'}
-                />
                 <input
                     ref={emailInputRef}
                     type={'email'}

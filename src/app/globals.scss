@@ -1,6 +1,4 @@
-:root {
-    --color: #707c97;
-}
+@import "../styles/colors";
 
 * {
     box-sizing: border-box;
@@ -16,8 +14,8 @@ body {
 }
 
 body {
-    color: var(--color);
-    background: linear-gradient(180deg, #f3f3fb 0%, #fdfbfd 100%);
+    color: $text;
+    background: $clear;
     display: grid;
     grid-template-columns: 14rem 1fr;
     grid-template-rows: 1fr;
@@ -39,15 +37,15 @@ a {
 h1,
 h2 {
     font-weight: 400;
-    color: #0d1c2e;
+    color: $title;
 }
 
 input::placeholder {
-    color: #707c97;
+    color: $text;
 }
 
 input {
-    color: #707c97;
+    color: $text;
 }
 
 [data-emoji="true"] {

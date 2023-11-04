@@ -41,6 +41,7 @@ type ChatViewProps = {
 
 const ChatView: FC<ChatViewProps> = ({ currentChat }) => {
     const { user } = useUser();
+    const [loading, setLoading] = useState(true);
     const [chatMessages, setChatMessages] = useState<MessageDTO[]>([]);
     const [emojiOpen, setEmojiOpen] = useState(false);
 
@@ -53,12 +54,13 @@ const ChatView: FC<ChatViewProps> = ({ currentChat }) => {
         }
     }, [currentChat, user]);
 
-    const loadMessages = async () => {
-        const messages = await messagesByChatIdRequest(
-            currentChat?.id,
-            chatMessages.length
-        );
-        setChatMessages((previous) => [...previous, ...messages]);
+    const loadMessages = async (chatId?: string, cursor = 0, init = false) => {
+        const messages = await messagesByChatIdRequest(chatId, cursor);
+
+        if (init) setChatMessages(messages);
+        else setChatMessages((previous) => [...previous, ...messages]);
+
+        setLoading(false);
     };
 
     const sendMessage = async () => {
@@ -108,13 +110,19 @@ const ChatView: FC<ChatViewProps> = ({ currentChat }) => {
         currentChat && (await registerAck(currentChat.id));
     };
 
-    const handleChatScroll = async (event: React.UIEvent<HTMLDivElement>) => {
-        const target = event.target as HTMLDivElement;
+    const handleChatScroll = useCallback(
+        async (event: React.UIEvent<HTMLDivElement>) => {
+            const target = event.target as HTMLDivElement;
 
-        if (target.scrollTop + target.scrollHeight === target.clientHeight) {
-            await loadMessages();
-        }
-    };
+            if (
+                target.scrollTop + target.scrollHeight ===
+                target.clientHeight
+            ) {
+                await loadMessages(currentChat?.id, chatMessages.length);
+            }
+        },
+        [currentChat, chatMessages]
+    );
 
     const handleMessage = (message: MessageDTO) => {
         setChatMessages((previous) => [message, ...previous]);
@@ -129,7 +137,7 @@ const ChatView: FC<ChatViewProps> = ({ currentChat }) => {
     }, [scrollToBottom]);
 
     useEffect(() => {
-        if (currentChat) loadMessages().catch(console.error);
+        loadMessages(currentChat?.id, 0, true).catch(console.error);
     }, [currentChat]);
 
     useEffect(() => {
@@ -234,9 +242,8 @@ const ChatView: FC<ChatViewProps> = ({ currentChat }) => {
                 </div>
             </div>
             <div
-                className={`${styles.loadingOverlay}${
-                    sender ? ' ' + styles.loadingHidden : ''
-                }`}
+                style={{ opacity: loading ? 1 : 0 }}
+                className={styles.loadingOverlay}
             >
                 <LoadingSpinner />
             </div>

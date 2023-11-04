@@ -12,7 +12,7 @@ export const registerMessage = async (
         body: JSON.stringify({ message, files }),
     };
 
-    const url = localStorage.getItem('service-url');
+    const url = process.env.NEXT_PUBLIC_BASE_URL;
     const response = await fetch(`${url}/v1/message/by-chat/${chatId}`, init);
     return response.json();
 };
@@ -25,7 +25,7 @@ export const registerAck = async (chatId: string, files?: any[]) => {
         },
     };
 
-    const url = localStorage.getItem('service-url');
+    const url = process.env.NEXT_PUBLIC_BASE_URL;
     const response = await fetch(
         `${url}/v1/message/by-chat/${chatId}/ack`,
         init
@@ -41,7 +41,7 @@ export const messagesByChatIdRequest = async (chatId?: string, cursor = 0) => {
         },
     };
 
-    const url = localStorage.getItem('service-url');
+    const url = process.env.NEXT_PUBLIC_BASE_URL;
     const response = await fetch(
         `${url}/v1/message/by-chat/${chatId}?cursor=${cursor}`,
         init

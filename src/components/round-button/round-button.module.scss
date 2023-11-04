@@ -1,3 +1,6 @@
+@use "sass:color";
+@import "../../styles/colors";
+
 .roundButton {
     cursor: pointer;
     border-radius: 50%;
@@ -9,55 +12,55 @@
 }
 
 .primary {
-    background: linear-gradient(326deg, #2a8bf2 14.76%, #7cb8f7 87.3%);
-    color: #fff;
+    background: $gradient;
+    color: $white;
 
     & svg {
-        stroke: #fff;
+        stroke: $white;
     }
 }
 
 .secondary {
-    background-color: #fff;
-    color: #707c97;
+    background-color: $white;
+    color: $text;
 
     & svg {
-        stroke: #707c97;
+        stroke: $text;
     }
 }
 
 .tertiary {
-    background-color: #2a8bf2;
-    color: #fff;
+    background-color: $primary;
+    color: $white;
 
     & svg {
-        stroke: #fff;
+        stroke: $white;
     }
 }
 
 .success {
-    background-color: #00C305;
-    color: #fff;
+    background-color: $success;
+    color: $white;
 
     & svg {
-        stroke: #fff;
+        stroke: $white;
     }
 }
 
 .error {
-    background-color: #FF3366;
-    color: #fff;
+    background-color: $danger;
+    color: $white;
 
     & svg {
-        stroke: #fff;
+        stroke: $white;
     }
 }
 
 .none {
     background-color: transparent;
-    color: #707c9785;
+    color: color.adjust($text, $alpha: -0.5);
 
     & svg {
-        stroke: #707c9785;
+        stroke: color.adjust($text, $alpha: -0.5);;
     }
 }

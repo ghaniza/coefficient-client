@@ -13,6 +13,7 @@ import styles from './chat.module.scss';
 import { useMessages } from '@/hooks/message.hook';
 import ChatView from '@/app/(main-application)/chat/chat-view';
 import CreateChat from '@/components/create-chat';
+import RoundButton from '@/components/round-button';
 
 const SEARCH_BAR_ITEMS = [
     {
@@ -67,7 +68,7 @@ export default function ChatPage() {
 
     const handleSelectChat = (id: string) => {
         console.log(id);
-        setSelected(id);
+        setSelected((prevId) => (prevId === id ? '' : id));
     };
 
     const handleConnect = () => {
@@ -82,7 +83,6 @@ export default function ChatPage() {
 
     const handleChatFilter = (item: any) => {
         setUnreadChatOnly(item.value === 'unread');
-        setSelected('');
     };
 
     const handleChatAck = async () => {
@@ -133,7 +133,7 @@ export default function ChatPage() {
 
     return (
         <>
-            <div className={styles.content}>
+            <div className={styles.content} data-content={!!selected}>
                 <section className={styles.previousChats}>
                     <div className={styles.header}>
                         <div className={styles.title}>
@@ -149,12 +149,13 @@ export default function ChatPage() {
                             />
                         </div>
                         <div>
-                            <Button onClick={handleCreateChatOpen}>
-                                <Plus />
-                                <span style={{ marginLeft: '0.375rem' }}>
-                                    Create new chat
-                                </span>
-                            </Button>
+                            <RoundButton
+                                onClick={handleCreateChatOpen}
+                                title={'Create new chat'}
+                                aria-label={'Create new chat'}
+                            >
+                                <Plus size={18} />
+                            </RoundButton>
                         </div>
                     </div>
                     <SearchBar items={SEARCH_BAR_ITEMS} />
@@ -169,13 +170,13 @@ export default function ChatPage() {
                         ))}
                     </div>
                 </section>
-                <section className={styles.messenger}>
-                    {currentChat ? (
+                {currentChat ? (
+                    <section className={styles.messenger}>
                         <ChatView currentChat={currentChat} />
-                    ) : (
-                        <></>
-                    )}
-                </section>
+                    </section>
+                ) : (
+                    <></>
+                )}
             </div>
             <CreateChat
                 modalOpen={createChatOpen}

@@ -1,0 +1,34 @@
+@import "../../styles/colors";
+
+.container {
+  height: 100%;
+  overflow: auto;
+  list-style: none;
+  position: relative;
+  padding: 1rem 0;
+
+  & li {
+    padding: 0;
+    margin: 0;
+    height: 3rem;
+    position: relative;
+
+    & small {
+      position: absolute;
+      top: 0;
+      transform: translateY(-50%);
+    }
+  }
+
+  & li:nth-child(odd) {
+    background-color: whitesmoke;
+  }
+}
+
+.marker {
+  left: 2.5rem;
+  right: 0;
+  height: 2px;
+  background: $danger;
+  position: absolute;
+}

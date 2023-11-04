@@ -1,6 +1,4 @@
-:root {
-    --color: #707c97;
-}
+@import "../../styles/colors";
 
 * {
     box-sizing: border-box;
@@ -16,8 +14,8 @@ body {
 }
 
 body {
-    color: var(--color);
-    background: linear-gradient(180deg, #f3f3fb 0%, #fdfbfd 100%);
+    color: $text;
+    background: $clear;
     display: flex;
     align-items: center;
     justify-content: center;

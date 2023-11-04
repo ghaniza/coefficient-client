@@ -4,10 +4,14 @@
     "private": true,
     "scripts": {
         "dev": "next dev -p 5001",
+        "doppler:dev": "doppler run -c dev --preserve-env -- next dev -p 5001",
         "build": "next build",
+        "doppler:build": "doppler run -c dev --preserve-env -- next build",
         "start": "next start",
+        "doppler:start": "doppler run -c dev --preserve-env -- next start",
         "lint": "next lint",
-        "tauri": "tauri"
+        "tauri": "tauri",
+        "doppler:tauri": "doppler run -c dev --preserve-env -- tauri"
     },
     "dependencies": {
         "@tauri-apps/api": "^1.5.1",

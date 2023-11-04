@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 
 export const makeIO = () => {
-    const url = localStorage.getItem('service-url') ?? '';
+    const url = process.env.NEXT_PUBLIC_BASE_URL ?? '';
 
     (window as any).socketIo = io(url, {
         reconnection: true,

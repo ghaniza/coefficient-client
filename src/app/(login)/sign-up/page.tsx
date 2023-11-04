@@ -7,7 +7,6 @@ import { createUserRequest } from '@/services/user/user.api';
 import { PASSWORD_REGEX } from '@/global/constants';
 
 const SignUpPage = () => {
-    const serviceUrlInputRef = useRef<HTMLInputElement>(null);
     const authCodeInputRef = useRef<HTMLInputElement>(null);
     const nameInputRef = useRef<HTMLInputElement>(null);
     const emailInputRef = useRef<HTMLInputElement>(null);
@@ -18,7 +17,6 @@ const SignUpPage = () => {
         event.preventDefault();
 
         if (
-            !serviceUrlInputRef.current ||
             !authCodeInputRef.current ||
             !nameInputRef.current ||
             !emailInputRef.current ||
@@ -35,13 +33,11 @@ const SignUpPage = () => {
             return;
         }
 
-        const url = serviceUrlInputRef.current.value;
         const code = authCodeInputRef.current.value;
         const name = nameInputRef.current.value;
         const email = emailInputRef.current.value;
 
         const body = {
-            url,
             code,
             name,
             email,
@@ -59,12 +55,6 @@ const SignUpPage = () => {
             <h1>Sign Up</h1>
             <span>Create a new account</span>
             <form onSubmit={handleAccountCreate}>
-                <input
-                    ref={serviceUrlInputRef}
-                    type={'url'}
-                    placeholder={'http://service.url'}
-                    required={true}
-                />
                 <input
                     ref={authCodeInputRef}
                     type={'text'}

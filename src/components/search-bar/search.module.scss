@@ -1,6 +1,8 @@
+@import "../../styles/colors";
+
 .container {
     border-radius: 0.375rem;
-    background-color: #fff;
+    background-color: $white;
     display: grid;
     grid-template-columns: min-content 1fr 8rem;
     grid-template-rows: 1fr;

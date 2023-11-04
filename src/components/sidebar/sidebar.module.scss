@@ -1,5 +1,7 @@
+@import "../../styles/colors";
+
 .container {
-    background-color: #fff;
+    background-color: $white;
     padding: 4rem 0;
     display: grid;
     grid-template-rows: min-content 1fr min-content;
@@ -25,7 +27,7 @@
     }
 
     & li[data-selected='true'] {
-        color: #2a8bf2;
+        color: $primary;
 
         & svg {
             stroke: linear-gradient(142deg, #7cb8f7 20.3%, #2a8bf2 74.69%);
@@ -39,7 +41,7 @@
             bottom: 0;
             width: 3px;
             border-radius: 2px;
-            background-color: #2a8bf2;
+            background-color: $primary;
             box-shadow:
                 4px 0 25px 0 rgba(42, 139, 242, 0.75),
                 0 0 10px 0 rgba(42, 139, 242, 0.55),
@@ -63,12 +65,12 @@
 .notification {
     width: 7px;
     height: 7px;
-    background-color: tomato;
+    background-color: $danger;
     position: absolute;
     top: 0.25rem;
     left: 1.75rem;
     border-radius: 50%;
-    border: 1px solid #fff;
+    border: 1px solid $white;
 }
 
 .logout {

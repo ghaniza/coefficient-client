@@ -1,7 +1,6 @@
 'use client';
 
 export const authenticate = async (
-    url: string,
     username: string,
     password: string,
     scopes = ['*']
@@ -14,7 +13,10 @@ export const authenticate = async (
         body: JSON.stringify({ username, password, scopes }),
     };
 
-    const response = await fetch(`${url}/v1/auth/login`, init);
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/v1/auth/login`,
+        init
+    );
 
     if (response.status !== 201) return null;
 

@@ -1,10 +1,13 @@
+@use "sass:color";
+@import "../../styles/colors";
+
 .content {
     border-radius: 0 0.625rem 0.625rem 0.625rem;
-    background: linear-gradient(91deg, #60a9f6 0%, #2a8bf2 100%);
+    background: $primary;
     max-width: 60%;
     width: fit-content;
     position: relative;
-    color: #fff;
+    color: $white;
     font-size: 11pt;
     padding: 1rem;
     margin-left: 3rem;
@@ -21,7 +24,7 @@
     }
 
     & > small {
-        color: #707c97b2;
+        color: color.adjust($text, $alpha: -0.3);
         position: absolute;
         bottom: -1rem;
         white-space: nowrap;
@@ -44,9 +47,9 @@
 
 .mine {
     border-radius: 0.625rem 0 0.625rem 0.625rem;
-    background: #fff;
-    color: #707c97;
-    border: solid 1px rgba(112, 124, 151, 0.25);
+    background: $white;
+    color: $text;
+    border: solid 1px $shadow;
     margin-left: 0;
     margin-right: 3rem;
     align-self: flex-end;

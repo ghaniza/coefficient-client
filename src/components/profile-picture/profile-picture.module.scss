@@ -1,3 +1,5 @@
+@import "../../styles/colors";
+
 .container {
     overflow: hidden;
     position: relative;
@@ -14,8 +16,8 @@
     height: max(15%, 8px);
     border-radius: 50%;
     position: absolute;
-    background-color: #00c305;
+    background-color: $success;
     z-index: 1;
-    border: 1px solid #fff;
+    border: 1px solid $white;
     transform: translate(-50%, -50%);
 }

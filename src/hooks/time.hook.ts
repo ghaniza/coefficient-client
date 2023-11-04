@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import dateToTimespan from '@/helpers/date-to-timespan';
 
-export const useTimeDifference = (date?: Date) => {
-    const [ref, setRef] = useState(new Date());
+export const useDate = (date = new Date()) => {
+    const [ref, setRef] = useState(date);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
     const startTimer = () => {
         if (intervalRef.current) clearInterval(intervalRef.current);
 
@@ -17,5 +16,10 @@ export const useTimeDifference = (date?: Date) => {
         startTimer();
     }, [date]);
 
+    return ref;
+};
+
+export const useTimeDifference = (date?: Date) => {
+    const ref = useDate();
     return useMemo<string>(() => dateToTimespan(date, ref), [date, ref]);
 };

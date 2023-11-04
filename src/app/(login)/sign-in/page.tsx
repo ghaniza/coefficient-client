@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 const SignInPage = () => {
-    const serviceUrlRef = useRef<HTMLInputElement>(null);
     const usernameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -27,17 +26,7 @@ const SignInPage = () => {
     };
 
     const loadVariables = () => {
-        if (
-            !serviceUrlRef.current ||
-            !usernameRef.current ||
-            !passwordRef.current
-        )
-            return;
-
-        const service = localStorage.getItem('service-url');
-        if (!service) return;
-
-        serviceUrlRef.current.value = service;
+        if (!usernameRef.current || !passwordRef.current) return;
 
         const username = localStorage.getItem('username');
         if (!username) return;
@@ -48,29 +37,15 @@ const SignInPage = () => {
     const handleLogin = async (event: React.FormEvent) => {
         event.preventDefault();
 
-        if (
-            !serviceUrlRef.current ||
-            !usernameRef.current ||
-            !passwordRef.current
-        )
-            return;
-
-        const serviceUrl = serviceUrlRef.current.value;
-        if (!serviceUrl) return;
-
-        const url = new URL(serviceUrl);
-
-        const service = url.origin;
+        if (!usernameRef.current || !passwordRef.current) return;
 
         const username = usernameRef.current.value;
         const password = passwordRef.current.value;
 
-        const response = await authenticate(service, username, password);
+        const response = await authenticate(username, password);
 
         if (response) {
-            localStorage.setItem('service-url', service);
             localStorage.setItem('username', username);
-
             localStorage.setItem('access', response.access_token);
             localStorage.setItem('refresh', response.refresh_token);
             localStorage.setItem('exp', response.exp);
@@ -78,8 +53,6 @@ const SignInPage = () => {
             router.push('/home');
         } else {
             alert('Invalid credentials');
-
-            localStorage.removeItem('service-url');
             localStorage.removeItem('username');
         }
     };
@@ -87,19 +60,13 @@ const SignInPage = () => {
     useEffect(() => {
         loadVariables();
         requestPermission().catch();
-    }, [serviceUrlRef, usernameRef, passwordRef]);
+    }, [usernameRef, passwordRef]);
 
     return (
         <>
             <h1>Hello!</h1>
             <span>Login to your account</span>
             <form onSubmit={handleLogin}>
-                <input
-                    ref={serviceUrlRef}
-                    placeholder={'Service URL'}
-                    type={'url'}
-                    required={true}
-                />
                 <input
                     ref={usernameRef}
                     placeholder={'Username'}
